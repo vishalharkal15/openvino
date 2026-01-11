@@ -33,7 +33,11 @@ void function(const std::shared_ptr<Model>& function, const ov::TensorVector& in
         if (outputs[i].get_element_type() != expected_type) {
             ov::Tensor converted_output(expected_type, outputs[i].get_shape());
             ov::TensorVector convert_outputs = {converted_output};
-            ov::op::v0::Convert().evaluate(convert_outputs, ov::TensorVector{outputs[i]});
+            OPENVINO_ASSERT(ov::op::v0::Convert().evaluate(convert_outputs, ov::TensorVector{outputs[i]}),
+                            "Failed to convert tensor from ",
+                            outputs[i].get_element_type(),
+                            " to ",
+                            expected_type);
             outputs[i] = converted_output;
         }
     }
@@ -62,7 +66,11 @@ void function(const std::shared_ptr<Model>& function,
         if (outputs[i].get_element_type() != expected_type) {
             ov::Tensor converted_output(expected_type, outputs[i].get_shape());
             ov::TensorVector convert_outputs = {converted_output};
-            ov::op::v0::Convert().evaluate(convert_outputs, ov::TensorVector{outputs[i]});
+            OPENVINO_ASSERT(ov::op::v0::Convert().evaluate(convert_outputs, ov::TensorVector{outputs[i]}),
+                            "Failed to convert tensor from ",
+                            outputs[i].get_element_type(),
+                            " to ",
+                            expected_type);
             outputs[i] = converted_output;
         }
     }
